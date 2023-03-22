@@ -12,7 +12,7 @@ import qualified Data.Text as Text
 data Transaction = forall result. (Show result, Eq result) => Transaction {
   name :: Text,
   applyToHashMap :: HashMap Text Int -> (result, HashMap Text Int),
-  applyToStmHamt :: Hamt (Text, Int) -> STM result
+  applyToStmHamt :: Hamt STM (Text, Int) -> STM result
 }
 
 instance Show Transaction where

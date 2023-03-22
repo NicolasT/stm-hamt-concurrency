@@ -25,34 +25,34 @@ import qualified StmHamt.Concurrency.Hamt as Hamt
 
 
 {-# INLINE new #-}
-new :: STM (SizedHamt element)
+new :: MonadSTM stm => stm (SizedHamt stm element)
 new = SizedHamt <$> newTVar 0 <*> Hamt.new
 
 {-# INLINE newIO #-}
-newIO :: IO (SizedHamt element)
+newIO :: IO (SizedHamt STM element)
 newIO = SizedHamt <$> newTVarIO 0 <*> Hamt.newIO
 
 -- |
 -- /O(1)/.
 {-# INLINE null #-}
-null :: SizedHamt element -> STM Bool
+null :: MonadSTM stm => SizedHamt stm element -> stm Bool
 null (SizedHamt sizeVar _) = (== 0) <$> readTVar sizeVar
 
 -- |
 -- /O(1)/.
 {-# INLINE size #-}
-size :: SizedHamt element -> STM Int
+size :: MonadSTM stm => SizedHamt stm element -> stm Int
 size (SizedHamt sizeVar _) = readTVar sizeVar
 
 {-# INLINE reset #-}
-reset :: SizedHamt element -> STM ()
+reset :: MonadSTM stm => SizedHamt stm element -> stm ()
 reset (SizedHamt sizeVar hamt) =
   do
     Hamt.reset hamt
     writeTVar sizeVar 0
 
 {-# INLINE focus #-}
-focus :: (Eq key, Hashable key) => Focus element STM result -> (element -> key) -> key -> SizedHamt element -> STM result
+focus :: (MonadSTM stm, Eq key, Hashable key) => Focus element stm result -> (element -> key) -> key -> SizedHamt stm element -> stm result
 focus focus elementToKey key (SizedHamt sizeVar hamt) =
   do
     (result, sizeModifier) <- Hamt.focus newFocus elementToKey key hamt
@@ -62,20 +62,20 @@ focus focus elementToKey key (SizedHamt sizeVar hamt) =
     newFocus = Focus.testingSizeChange (Just pred) Nothing (Just succ) focus
 
 {-# INLINE insert #-}
-insert :: (Eq key, Hashable key) => (element -> key) -> element -> SizedHamt element -> STM ()
+insert :: (MonadSTM stm, Eq key, Hashable key) => (element -> key) -> element -> SizedHamt stm element -> stm ()
 insert elementToKey element (SizedHamt sizeVar hamt) =
   do
     inserted <- Hamt.insert elementToKey element hamt
     when inserted (modifyTVar' sizeVar succ)
 
 {-# INLINE lookup #-}
-lookup :: (Eq key, Hashable key) => (element -> key) -> key -> SizedHamt element -> STM (Maybe element)
+lookup :: (MonadSTM stm, Eq key, Hashable key) => (element -> key) -> key -> SizedHamt stm element -> stm (Maybe element)
 lookup elementToKey key (SizedHamt _ hamt) = Hamt.lookup elementToKey key hamt
 
 {-# INLINE unfoldlM #-}
-unfoldlM :: SizedHamt a -> UnfoldlM STM a
+unfoldlM :: MonadSTM stm => SizedHamt stm a -> UnfoldlM stm a
 unfoldlM (SizedHamt _ hamt) = Hamt.unfoldlM hamt
 
 {-# INLINE listT #-}
-listT :: SizedHamt a -> ListT STM a
+listT :: SizedHamt STM a -> ListT STM a
 listT (SizedHamt _ hamt) = Hamt.listT hamt

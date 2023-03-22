@@ -24,19 +24,19 @@ main =
   [
     testGroup "Hamt" $ let
 
-      hamtFromListUsingInsertWithHashInIo :: (Eq key, Eq value) => (key -> Int) -> [(key, value)] -> IO (Hamt (key, value))
+      hamtFromListUsingInsertWithHashInIo :: (Eq key, Eq value) => (key -> Int) -> [(key, value)] -> IO (Hamt STM (key, value))
       hamtFromListUsingInsertWithHashInIo hash list = do
         hamt <- Hamt.newIO
         atomically $ forM_ list $ \ (key, value) -> Hamt.insertExplicitly (hash key) ((==) key . fst) (key, value) hamt
         return hamt
 
-      hamtFromListUsingInsertInIo :: (Eq key, Hashable key, Eq value) => [(key, value)] -> IO (Hamt (key, value))
+      hamtFromListUsingInsertInIo :: (Eq key, Hashable key, Eq value) => [(key, value)] -> IO (Hamt STM (key, value))
       hamtFromListUsingInsertInIo list = do
         hamt <- Hamt.newIO
         atomically $ forM_ list $ \ pair -> Hamt.insert fst pair hamt
         return hamt
 
-      hamtToListInIo :: Hamt a -> IO [a]
+      hamtToListInIo :: Hamt STM a -> IO [a]
       hamtToListInIo hamt =
         fmap reverse $
         atomically $

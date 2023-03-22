@@ -27,16 +27,16 @@ import qualified PrimitiveExtras.SmallArray as SmallArray
 import qualified PrimitiveExtras.By6Bits as By6Bits
 
 
-new :: STM (Hamt a)
+new :: MonadSTM stm => stm (Hamt stm a)
 new = Hamt <$> newTVar By6Bits.empty
 
-newIO :: IO (Hamt a)
+newIO :: IO (Hamt STM a)
 newIO = Hamt <$> newTVarIO By6Bits.empty
 
-focus :: (Eq key, Hashable key) => Focus element STM result -> (element -> key) -> key -> Hamt element -> STM result
+focus :: (MonadSTM stm, Eq key, Hashable key) => Focus element stm result -> (element -> key) -> key -> Hamt stm element -> stm result
 focus focus elementToKey key = focusExplicitly focus (hash key) ((==) key . elementToKey)
 
-focusExplicitly :: Focus a STM b -> Int -> (a -> Bool) -> Hamt a -> STM b
+focusExplicitly :: MonadSTM stm => Focus a stm b -> Int -> (a -> Bool) -> Hamt stm a -> stm b
 focusExplicitly focus hash test hamt =
   {-# SCC "focus" #-} 
   let
@@ -46,7 +46,7 @@ focusExplicitly focus hash test hamt =
 {-|
 Returns a flag, specifying, whether the size has been affected.
 -}
-insert :: (Eq key, Hashable key) => (element -> key) -> element -> Hamt element -> STM Bool
+insert :: (MonadSTM stm, Eq key, Hashable key) => (element -> key) -> element -> Hamt stm element -> stm Bool
 insert elementToKey element = let
   !key = elementToKey element
   in insertExplicitly (hash key) ((==) key . elementToKey) element
@@ -54,7 +54,7 @@ insert elementToKey element = let
 {-|
 Returns a flag, specifying, whether the size has been affected.
 -}
-insertExplicitly :: Int -> (a -> Bool) -> a -> Hamt a -> STM Bool
+insertExplicitly :: MonadSTM stm => Int -> (a -> Bool) -> a -> Hamt stm a -> stm Bool
 insertExplicitly hash testKey element =
   {-# SCC "insertExplicitly" #-}
   let
@@ -88,7 +88,7 @@ insertExplicitly hash testKey element =
             BranchesBranch hamt -> loop (IntOps.nextDepth depth) hamt
     in loop 0
 
-pair :: Int -> Int -> Branch a -> Int -> Branch a -> STM (Hamt a)
+pair :: MonadSTM stm => Int -> Int -> Branch stm a -> Int -> Branch stm a -> stm (Hamt stm a)
 pair depth hash1 branch1 hash2 branch2 =
   {-# SCC "pair" #-}
   let
@@ -104,10 +104,10 @@ pair depth hash1 branch1 hash2 branch2 =
 {-|
 Returns a flag, specifying, whether the size has been affected.
 -}
-lookup :: (Eq key, Hashable key) => (element -> key) -> key -> Hamt element -> STM (Maybe element)
+lookup :: (MonadSTM stm, Eq key, Hashable key) => (element -> key) -> key -> Hamt stm element -> stm (Maybe element)
 lookup elementToKey key = lookupExplicitly (hash key) ((==) key . elementToKey)
 
-lookupExplicitly :: Int -> (a -> Bool) -> Hamt a -> STM (Maybe a)
+lookupExplicitly :: MonadSTM stm => Int -> (a -> Bool) -> Hamt stm a -> stm (Maybe a)
 lookupExplicitly hash test =
   {-# SCC "lookupExplicitly" #-}
   let
@@ -124,16 +124,16 @@ lookupExplicitly hash test =
           Nothing -> return Nothing
     in loop 0
 
-reset :: Hamt a -> STM ()
+reset :: MonadSTM stm => Hamt stm a -> stm ()
 reset (Hamt branchSsaVar) = writeTVar branchSsaVar By6Bits.empty
 
-unfoldlM :: Hamt a -> UnfoldlM STM a
+unfoldlM :: MonadSTM stm => Hamt stm a -> UnfoldlM stm a
 unfoldlM = UnfoldlM.hamtElements
 
-listT :: Hamt a -> ListT STM a
+listT :: Hamt STM a -> ListT STM a
 listT = ListT.hamtElements
 
-null :: Hamt a -> STM Bool
+null :: MonadSTM stm => Hamt stm a -> stm Bool
 null (Hamt branchSsaVar) = do
   branchSsa <- readTVar branchSsaVar
   return (By6Bits.null branchSsa)
@@ -141,7 +141,7 @@ null (Hamt branchSsaVar) = do
 {-|
 Render the structure of HAMT.
 -}
-introspect :: Show a => Hamt a -> STM String
+introspect :: (Show a, MonadSTM stm) => Hamt stm a -> stm String
 introspect (Hamt branchArrayVar) = do
   branchArray <- readTVar branchArrayVar
   indexedList <- traverse (traverse introspectBranch) (By6Bits.toIndexedList branchArray)

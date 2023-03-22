@@ -32,6 +32,7 @@ library
     StmHamt.Concurrency.ListT
   build-depends:
     base >=4.9 && <5,
+    concurrency >=1.11.0.2 && <1.12,
     deferred-folds >=0.9 && <0.10,
     focus >=1 && <1.1,
     hashable <2,

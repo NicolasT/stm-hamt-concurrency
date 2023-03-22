@@ -56,7 +56,7 @@ transaction =
       (9, incrementUsingAdjustFocusTransaction)
     ]
 
-hamt :: Gen (STM (Hamt (Text, Int)))
+hamt :: Gen (STM (Hamt STM (Text, Int)))
 hamt = do
   list <- keyValueList
   return $ do

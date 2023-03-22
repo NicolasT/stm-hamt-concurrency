@@ -14,6 +14,7 @@ import Control.Applicative as Exports
 import Control.Arrow as Exports
 import Control.Category as Exports
 import Control.Concurrent as Exports
+import Control.Concurrent.Classy.STM as Exports (MonadSTM, TVar, newTVar, readTVar, writeTVar)
 import Control.Exception as Exports
 import Control.Monad as Exports hiding (mapM_, sequence_, forM_, msum, mapM, sequence, forM)
 import Control.Monad.IO.Class as Exports
@@ -52,7 +53,7 @@ import Foreign.ForeignPtr as Exports
 import Foreign.Ptr as Exports
 import Foreign.StablePtr as Exports
 import Foreign.Storable as Exports hiding (sizeOf, alignment)
-import GHC.Conc as Exports hiding (withMVar, threadWaitWriteSTM, threadWaitWrite, threadWaitReadSTM, threadWaitRead)
+import GHC.Conc as Exports (STM, newTVarIO)
 import GHC.Exts as Exports (lazy, inline, sortWith, groupWith)
 import GHC.Generics as Exports (Generic)
 import GHC.IO.Exception as Exports
@@ -108,7 +109,7 @@ traversePair f (x, y) = (,) x <$> f y
 
 -- | Strict version of 'modifyTVar'.
 {-# INLINE modifyTVar' #-}
-modifyTVar' :: TVar a -> (a -> a) -> STM ()
+modifyTVar' :: MonadSTM stm => TVar stm a -> (a -> a) -> stm ()
 modifyTVar' var f = do
     x <- readTVar var
     writeTVar var $! f x

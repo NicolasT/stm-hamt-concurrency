@@ -6,10 +6,10 @@ import qualified StmHamt.Concurrency.IntOps as IntOps
 import qualified PrimitiveExtras.By6Bits as By6Bits
 
 
-singleton :: Int -> a -> Branch a
+singleton :: Int -> a -> Branch stm a
 singleton hash a = LeavesBranch hash (pure a)
 
-pair :: Int -> Int -> Branch a -> Int -> Branch a -> STM (Branch a)
+pair :: MonadSTM stm => Int -> Int -> Branch stm a -> Int -> Branch stm a -> stm (Branch stm a)
 pair depth hash1 branch1 hash2 branch2 =
   {-# SCC "pair" #-}
   let

@@ -28,12 +28,12 @@ type Transaction row = Free (TransactionF row)
 type Interpreter container = 
   forall row. (Hashable row, Eq row) => container row -> forall result. Transaction row result -> STM result
 
-specializedInterpreter :: Interpreter A.Hamt
+specializedInterpreter :: Interpreter (A.Hamt STM)
 specializedInterpreter container =
   iterM $ \case
     Insert row continue -> A.insert id row container >> continue
 
-focusInterpreter :: Interpreter A.Hamt
+focusInterpreter :: Interpreter (A.Hamt STM)
 focusInterpreter container =
   iterM $ \case
     Insert row continue -> A.focus (D.insert row) id row container >> continue
@@ -48,7 +48,7 @@ type Session row = [[Transaction row ()]]
 type SessionRunner = 
   forall row. (Hashable row, Eq row) => Session row -> IO ()
 
-sessionRunner :: Interpreter A.Hamt -> SessionRunner
+sessionRunner :: Interpreter (A.Hamt STM) -> SessionRunner
 sessionRunner interpreter threadTransactions = do
   m <- atomically $ A.new
   void $ flip B.mapConcurrently threadTransactions $ \actions -> do
