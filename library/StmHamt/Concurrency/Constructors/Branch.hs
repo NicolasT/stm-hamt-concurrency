@@ -1,8 +1,8 @@
-module StmHamt.Constructors.Branch where
+module StmHamt.Concurrency.Constructors.Branch where
 
-import StmHamt.Prelude
-import StmHamt.Types
-import qualified StmHamt.IntOps as IntOps
+import StmHamt.Concurrency.Prelude
+import StmHamt.Concurrency.Types
+import qualified StmHamt.Concurrency.IntOps as IntOps
 import qualified PrimitiveExtras.By6Bits as By6Bits
 
 

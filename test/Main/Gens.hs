@@ -2,10 +2,10 @@ module Main.Gens where
 
 import Prelude hiding (choose)
 import Test.QuickCheck.Gen
-import StmHamt.Hamt (Hamt)
+import StmHamt.Concurrency.Hamt (Hamt)
 import Focus (Focus(..))
 import Main.Transaction (Transaction)
-import qualified StmHamt.Hamt as StmHamt
+import qualified StmHamt.Concurrency.Hamt as StmHamt
 import qualified Data.HashMap.Strict as HashMap
 import qualified Main.Transaction as Transaction
 

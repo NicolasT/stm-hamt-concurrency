@@ -4,7 +4,7 @@ import Rebase.Prelude
 import Criterion.Main
 import Control.Monad.Free
 import Control.Monad.Free.TH
-import qualified StmHamt.Hamt as A
+import qualified StmHamt.Concurrency.Hamt as A
 import qualified Control.Concurrent.Async as B
 import qualified System.Random.MWC.Monad as C
 import qualified Focus as D

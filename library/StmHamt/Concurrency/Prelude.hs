@@ -1,4 +1,4 @@
-module StmHamt.Prelude
+module StmHamt.Concurrency.Prelude
 ( 
   module Exports,
   traversePair,

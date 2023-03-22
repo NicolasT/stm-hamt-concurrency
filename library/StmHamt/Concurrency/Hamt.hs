@@ -1,4 +1,4 @@
-module StmHamt.Hamt
+module StmHamt.Concurrency.Hamt
 (
   Hamt,
   new,
@@ -16,13 +16,13 @@ module StmHamt.Hamt
 )
 where
 
-import StmHamt.Prelude hiding (empty, insert, update, lookup, delete, null)
-import StmHamt.Types
+import StmHamt.Concurrency.Prelude hiding (empty, insert, update, lookup, delete, null)
+import StmHamt.Concurrency.Types
 import qualified Focus as Focus
-import qualified StmHamt.Focuses as Focus
-import qualified StmHamt.UnfoldlM as UnfoldlM
-import qualified StmHamt.ListT as ListT
-import qualified StmHamt.IntOps as IntOps
+import qualified StmHamt.Concurrency.Focuses as Focus
+import qualified StmHamt.Concurrency.UnfoldlM as UnfoldlM
+import qualified StmHamt.Concurrency.ListT as ListT
+import qualified StmHamt.Concurrency.IntOps as IntOps
 import qualified PrimitiveExtras.SmallArray as SmallArray
 import qualified PrimitiveExtras.By6Bits as By6Bits
 

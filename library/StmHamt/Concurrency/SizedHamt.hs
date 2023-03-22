@@ -2,7 +2,7 @@
 -- HAMT API,
 -- optimized for a fast 'size' operation.
 -- That however comes at the cost of a small overhead in the other operations.
-module StmHamt.SizedHamt
+module StmHamt.Concurrency.SizedHamt
 (
   SizedHamt,
   new,
@@ -18,10 +18,10 @@ module StmHamt.SizedHamt
 )
 where
 
-import StmHamt.Prelude hiding (insert, lookup, delete, fold, null)
-import StmHamt.Types
+import StmHamt.Concurrency.Prelude hiding (insert, lookup, delete, fold, null)
+import StmHamt.Concurrency.Types
 import qualified Focus as Focus
-import qualified StmHamt.Hamt as Hamt
+import qualified StmHamt.Concurrency.Hamt as Hamt
 
 
 {-# INLINE new #-}

@@ -8,11 +8,11 @@ import Test.Tasty.QuickCheck hiding ((.&.))
 import Test.QuickCheck.Instances
 import Test.QuickCheck hiding ((.&.))
 import Test.QuickCheck.Property hiding (testCase, (.&.))
-import StmHamt.Hamt (Hamt)
+import StmHamt.Concurrency.Hamt (Hamt)
 import Main.Transaction (Transaction)
 import qualified Main.Transaction as Transaction
 import qualified Main.Gens as Gens
-import qualified StmHamt.Hamt as Hamt
+import qualified StmHamt.Concurrency.Hamt as Hamt
 import qualified Data.HashMap.Strict as HashMap
 import qualified Focus
 import qualified DeferredFolds.UnfoldlM as UnfoldlM

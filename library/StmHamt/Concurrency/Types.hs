@@ -1,7 +1,7 @@
 {-# OPTIONS_GHC -funbox-strict-fields #-}
-module StmHamt.Types where
+module StmHamt.Concurrency.Types where
 
-import StmHamt.Prelude
+import StmHamt.Concurrency.Prelude
 
 {-|
 STM-specialized Hash Array Mapped Trie,

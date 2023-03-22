@@ -1,7 +1,7 @@
-module StmHamt.IntOps where
+module StmHamt.Concurrency.IntOps where
 
-import StmHamt.Prelude hiding (mask, index)
-import StmHamt.Types
+import StmHamt.Concurrency.Prelude hiding (mask, index)
+import StmHamt.Concurrency.Types
 
 
 {-# INLINE atDepth #-}

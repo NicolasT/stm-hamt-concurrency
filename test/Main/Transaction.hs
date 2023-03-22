@@ -1,9 +1,9 @@
 module Main.Transaction where
 
 import Prelude
-import StmHamt.Hamt (Hamt)
+import StmHamt.Concurrency.Hamt (Hamt)
 import Focus (Focus(..))
-import qualified StmHamt.Hamt as StmHamt
+import qualified StmHamt.Concurrency.Hamt as StmHamt
 import qualified Data.HashMap.Strict as HashMap
 import qualified Focus
 import qualified Data.Text as Text

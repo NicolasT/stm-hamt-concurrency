@@ -1,7 +1,7 @@
-module StmHamt.ListT where
+module StmHamt.Concurrency.ListT where
 
-import StmHamt.Prelude hiding (filter, all)
-import StmHamt.Types
+import StmHamt.Concurrency.Prelude hiding (filter, all)
+import StmHamt.Concurrency.Types
 import ListT
 import qualified PrimitiveExtras.SmallArray as SmallArray
 import qualified PrimitiveExtras.By6Bits as By6Bits

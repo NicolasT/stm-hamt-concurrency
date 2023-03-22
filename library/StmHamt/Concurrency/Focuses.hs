@@ -1,13 +1,13 @@
 {-|
 Utility focuses.
 -}
-module StmHamt.Focuses where
+module StmHamt.Concurrency.Focuses where
 
-import StmHamt.Prelude
-import StmHamt.Types
+import StmHamt.Concurrency.Prelude
+import StmHamt.Concurrency.Types
 import Focus
-import qualified StmHamt.IntOps as IntOps
-import qualified StmHamt.Constructors.Branch as BranchConstructors
+import qualified StmHamt.Concurrency.IntOps as IntOps
+import qualified StmHamt.Concurrency.Constructors.Branch as BranchConstructors
 import qualified PrimitiveExtras.By6Bits as By6Bits
 import qualified PrimitiveExtras.SmallArray as SmallArray
 

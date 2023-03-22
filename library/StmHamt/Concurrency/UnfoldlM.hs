@@ -1,7 +1,7 @@
-module StmHamt.UnfoldlM where
+module StmHamt.Concurrency.UnfoldlM where
 
-import StmHamt.Prelude hiding (filter, all)
-import StmHamt.Types
+import StmHamt.Concurrency.Prelude hiding (filter, all)
+import StmHamt.Concurrency.Types
 import DeferredFolds.UnfoldlM
 import qualified PrimitiveExtras.SmallArray as SmallArray
 import qualified PrimitiveExtras.By6Bits as By6Bits
