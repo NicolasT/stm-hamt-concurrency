@@ -7,10 +7,10 @@ import qualified PrimitiveExtras.SmallArray as SmallArray
 import qualified PrimitiveExtras.By6Bits as By6Bits
 
 
-hamtElements :: Hamt STM a -> ListT STM a
+hamtElements :: Hamt (STM IO) a -> ListT (STM IO) a
 hamtElements (Hamt var) = tVarValue var >>= By6Bits.elementsListT >>= branchElements
 
-branchElements :: Branch STM a -> ListT STM a
+branchElements :: Branch (STM IO) a -> ListT (STM IO) a
 branchElements = \ case
   LeavesBranch _ array -> SmallArray.elementsListT array
   BranchesBranch hamt -> hamtElements hamt

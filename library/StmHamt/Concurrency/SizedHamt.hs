@@ -29,8 +29,8 @@ new :: MonadSTM stm => stm (SizedHamt stm element)
 new = SizedHamt <$> newTVar 0 <*> Hamt.new
 
 {-# INLINE newIO #-}
-newIO :: IO (SizedHamt STM element)
-newIO = SizedHamt <$> newTVarIO 0 <*> Hamt.newIO
+newIO :: MonadConc m => m (SizedHamt (STM m) element)
+newIO = SizedHamt <$> newTVarConc 0 <*> Hamt.newIO
 
 -- |
 -- /O(1)/.
@@ -77,5 +77,5 @@ unfoldlM :: MonadSTM stm => SizedHamt stm a -> UnfoldlM stm a
 unfoldlM (SizedHamt _ hamt) = Hamt.unfoldlM hamt
 
 {-# INLINE listT #-}
-listT :: SizedHamt STM a -> ListT STM a
+listT :: SizedHamt (STM IO) a -> ListT (STM IO) a
 listT (SizedHamt _ hamt) = Hamt.listT hamt

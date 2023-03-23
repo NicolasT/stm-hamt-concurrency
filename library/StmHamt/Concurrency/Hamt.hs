@@ -30,8 +30,8 @@ import qualified PrimitiveExtras.By6Bits as By6Bits
 new :: MonadSTM stm => stm (Hamt stm a)
 new = Hamt <$> newTVar By6Bits.empty
 
-newIO :: IO (Hamt STM a)
-newIO = Hamt <$> newTVarIO By6Bits.empty
+newIO :: MonadConc m => m (Hamt (STM m) a)
+newIO = Hamt <$> newTVarConc By6Bits.empty
 
 focus :: (MonadSTM stm, Eq key, Hashable key) => Focus element stm result -> (element -> key) -> key -> Hamt stm element -> stm result
 focus focus elementToKey key = focusExplicitly focus (hash key) ((==) key . elementToKey)
@@ -130,7 +130,7 @@ reset (Hamt branchSsaVar) = writeTVar branchSsaVar By6Bits.empty
 unfoldlM :: MonadSTM stm => Hamt stm a -> UnfoldlM stm a
 unfoldlM = UnfoldlM.hamtElements
 
-listT :: Hamt STM a -> ListT STM a
+listT :: Hamt (STM IO) a -> ListT (STM IO) a
 listT = ListT.hamtElements
 
 null :: MonadSTM stm => Hamt stm a -> stm Bool

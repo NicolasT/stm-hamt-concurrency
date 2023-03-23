@@ -17,6 +17,7 @@ import Control.Concurrent as Exports
 import Control.Concurrent.Classy.STM as Exports (MonadSTM, TVar, newTVar, readTVar, writeTVar)
 import Control.Exception as Exports
 import Control.Monad as Exports hiding (mapM_, sequence_, forM_, msum, mapM, sequence, forM)
+import Control.Monad.Conc.Class as Exports (MonadConc, STM, newTVarConc)
 import Control.Monad.IO.Class as Exports
 import Control.Monad.Fix as Exports hiding (fix)
 import Control.Monad.ST as Exports
@@ -53,7 +54,6 @@ import Foreign.ForeignPtr as Exports
 import Foreign.Ptr as Exports
 import Foreign.StablePtr as Exports
 import Foreign.Storable as Exports hiding (sizeOf, alignment)
-import GHC.Conc as Exports (STM, newTVarIO)
 import GHC.Exts as Exports (lazy, inline, sortWith, groupWith)
 import GHC.Generics as Exports (Generic)
 import GHC.IO.Exception as Exports
